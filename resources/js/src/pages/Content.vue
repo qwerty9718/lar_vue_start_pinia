@@ -5,6 +5,12 @@
         <div>
             <button class="btn btn-success" @click="initNum(2)">init</button>
         </div>
+
+
+        <div class="container" v-if="text">
+            <h1>{{text}}</h1>
+        </div>
+
     </div>
 </template>
 
@@ -18,14 +24,21 @@ export default defineComponent({
 
     computed:{
         ...mapGetters({
-            num: "firs/getNumber"
+            num: "firs/getNumber",
+            text: 'content_module/getText'
         })
     },
 
     methods:{
         ...mapActions({
-            initNum: "firs/initNumber"
+            initNum: "firs/initNumber",
+            getText: 'content_module/getTextDB'
         })
+    },
+
+
+    mounted() {
+        this.getText();
     }
 
 })

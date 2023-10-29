@@ -2,7 +2,9 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Навбар</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Переключатель навигации">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -10,11 +12,35 @@
 
 
                     <li class="nav-item">
-                        <router-link class="nav-link" aria-current="page" :to="{name: 'main'}">Main</router-link>
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'main'}">{{ $t('link_main') }}
+                        </router-link>
                     </li>
 
-                    <li class="nav-item">
-                        <router-link class="nav-link" aria-current="page" :to="{name: 'content'}">Content</router-link>
+                    <li class="nav-item" v-show="token">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'content'}">
+                            {{ $t('link_content') }}
+                        </router-link>
+                    </li>
+
+                    <li class="nav-item" v-show="!token">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'login'}">{{ $t('link_login') }}
+                        </router-link>
+                    </li>
+
+                    <li class="nav-item" v-show="!token">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'register'}">
+                            {{ $t('link_register') }}
+                        </router-link>
+                    </li>
+
+                    <li class="nav-item" v-show="token">
+                        <button class="nav-link" aria-current="page" @click="logout">{{ $t('link_logout') }}</button>
+                    </li>
+
+                    <li class="nav-item" v-show="token">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'cabinet'}">
+                            {{ $t('link_cabinet') }}
+                        </router-link>
                     </li>
 
                 </ul>
@@ -39,43 +65,64 @@
 
 <script>
 import {defineComponent} from 'vue'
-
+import {mapActions,mapGetters} from "vuex";
 
 export default defineComponent({
     name: "NavBar",
-    data(){
-        return{
+    data() {
+        return {
             lang: ''
         }
     },
 
-    methods:{
-      getLang(){
-          this.lang = localStorage.getItem('lang');
-      },
+    methods: {
+        ...mapActions({
+           afterLogout: "user_module/afterLogout",
+           getAccessToken: "login_register_module/getAccessToken"
+        }),
 
-        setLanguage(lang){
+        getLang() {
+            this.lang = localStorage.getItem('lang');
+        },
+        setLanguage(lang) {
             let currentLang = '';
 
-            if (lang === 'ru'){
+            if (lang === 'ru') {
                 currentLang = 'en'
             }
-            if (lang === 'en'){
+            if (lang === 'en') {
                 currentLang = 'ru';
             }
 
             this.$i18n.locale = currentLang;
             localStorage.setItem('lang', currentLang);
             this.lang = currentLang;
+        },
+
+
+        logout() {
+            axios.post('/logout');
+            localStorage.removeItem('x_xsrf_token');
+            this.afterLogout();
+            this.$router.push({name: 'main'});
         }
+
+
+    },
+
+
+    computed:{
+      ...mapGetters({
+          token: "login_register_module/getToken"
+      })
     },
 
     mounted() {
         this.getLang();
+        this.getAccessToken();
     }
 })
 </script>
-
 
 
 <style scoped>

@@ -12,5 +12,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+//Auth::routes();
 Route::get('{any?}', fn () => view('app'))->where('any','.*');
+Auth::routes();
+
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

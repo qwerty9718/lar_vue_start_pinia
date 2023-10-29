@@ -1,19 +1,23 @@
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
 
 import axios from 'axios';
+import router from "@/src/router/router.js";
+import store from "@/src/store/index.js";
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+window.axios.interceptors.response.use({}, error => {
+    if (error.response.status === 401 || error.response.status === 419){
+        router.push({name: 'login'});
+        const token = localStorage.getItem('x_xsrf_token');
+        if (token){
+            localStorage.removeItem('x_xsrf_token');
+            store.dispatch('login_register_module/removeAccessToken');
+        }
+    }
+});
+
 
 // import Echo from 'laravel-echo';
 
