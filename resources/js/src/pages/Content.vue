@@ -38,7 +38,7 @@ export default defineComponent({
 
 
     mounted() {
-        this.getText();
+        this.getText({lang: this.$i18n.locale});
     }
 
 })
