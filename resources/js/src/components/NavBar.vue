@@ -1,4 +1,5 @@
 <template>
+<!--{{this.$i18n.locale}}-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Навбар</a>
@@ -52,7 +53,7 @@
 
 
                     <li class="nav-item mt-2 ml-2">
-                        <button class="btn btn-success btn-sm" @click="setLanguage(lang)">{{ lang }}</button>
+                        <button class="btn btn-success btn-sm" @click="setLanguage({lang: lang,$i18n: this.$i18n})">{{ lang }}</button>
                     </li>
 
                 </ul>
@@ -69,36 +70,14 @@ import {mapActions,mapGetters} from "vuex";
 
 export default defineComponent({
     name: "NavBar",
-    data() {
-        return {
-            lang: ''
-        }
-    },
 
     methods: {
         ...mapActions({
-           afterLogout: "user_module/afterLogout",
-           getAccessToken: "login_register_module/getAccessToken"
+            afterLogout: "user_module/afterLogout",
+            getAccessToken: "login_register_module/getAccessToken",
+            getLang: 'lang_module/getLangFromLocalStorage',
+            setLanguage: 'lang_module/setLanguage'
         }),
-
-        getLang() {
-            this.lang = localStorage.getItem('lang');
-        },
-        setLanguage(lang) {
-            let currentLang = '';
-
-            if (lang === 'ru') {
-                currentLang = 'en'
-            }
-            if (lang === 'en') {
-                currentLang = 'ru';
-            }
-
-            this.$i18n.locale = currentLang;
-            localStorage.setItem('lang', currentLang);
-            this.lang = currentLang;
-        },
-
 
         logout() {
             axios.post('/logout');
@@ -107,13 +86,12 @@ export default defineComponent({
             this.$router.push({name: 'main'});
         }
 
-
     },
-
 
     computed:{
       ...mapGetters({
-          token: "login_register_module/getToken"
+          token: "login_register_module/getToken",
+          lang: 'lang_module/getLang',
       })
     },
 
