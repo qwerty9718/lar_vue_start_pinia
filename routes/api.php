@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContentController;
 
 use Illuminate\Http\Request;
@@ -21,15 +22,25 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix' => LocalizationService::locale(),'middleware' => 'setLocale'], function (){
+Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLocale'], function () {
 
 
-    Route::get('/getContent', [ContentController::class,'getContent']);
-    Route::get('/getSecondContent',[ContentController::class,'getSecondContent']);
+    Route::get('/getContent', [ContentController::class, 'getContent'])->middleware('auth:sanctum');
+    Route::get('/getSecondContent', [ContentController::class, 'getSecondContent']);
+
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('/logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
+        Route::get('/get', [AuthController::class,'someContent'])->middleware('auth:sanctum');
+        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/register', [AuthController::class, 'register']);
+    });
 
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function (){
-   Route::get('/user-data',[ContentController::class,'index']);
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('/user-data', [ContentController::class, 'index']);
 
 });
+
+
+

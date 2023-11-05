@@ -1,4 +1,3 @@
-
 <script>
 import {defineComponent} from 'vue'
 import {mapActions, mapGetters} from "vuex";
@@ -6,17 +5,15 @@ import {mapActions, mapGetters} from "vuex";
 export default defineComponent({
     name: "Watch",
 
-    computed:{
+    computed: {
         ...mapGetters({
             lang: 'lang_module/getLang'
         }),
     },
 
-
-
-    methods:{
+    methods: {
         ...mapActions({
-            getPostsDB:'content_module/getPostsDB',
+            getPostsDB: 'content_module/getPostsDB',
             getText: 'content_module/getTextDB'
         }),
     },
@@ -24,15 +21,18 @@ export default defineComponent({
     watch: {
         lang: {
             handler(newVal) {
-                this.getPostsDB({lang: this.$i18n.locale});
-                this.getText({lang: this.$i18n.locale});
+                if(this.$route.name){
+                    if (this.$route.name !== 'login' && this.$route.name !== 'register'){
+                        this.getPostsDB({lang: this.$i18n.locale});
+                        this.getText({lang: this.$i18n.locale});
+                    }
+                }
             },
             deep: true,
         },
     },
 })
 </script>
-
 
 
 <style scoped>

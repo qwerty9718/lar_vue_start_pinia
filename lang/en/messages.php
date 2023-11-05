@@ -2,5 +2,6 @@
 
 return [
     "welcome" => 'Welcome',
-    'message' => 'message'
+    'message' => 'message',
+    'not_valid' => 'Bad credentials'
 ];

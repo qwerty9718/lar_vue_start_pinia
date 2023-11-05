@@ -25,7 +25,11 @@ export const content_Module = {
         },
 
         async getPostsDB({state, commit},{lang}){
-            const response = await axios.get('/api/'+ lang +'/getContent');
+            const response = await axios.get('/api/'+ lang +'/getContent',{
+                headers:{
+                    'authorization': 'Bearer '+ localStorage.getItem('x_xsrf_token')
+                }
+            });
             state.posts = response.data;
         }
     },

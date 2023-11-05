@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from "vue-router";
-
+import login_routes from "@/src/router/login_register_routes/login_routes.js";
 
 const routes = [
     {
@@ -12,26 +12,7 @@ const routes = [
         component: () => import('@/src/pages/Content.vue'),
         name:'content'
     },
-
-
-    {
-        path:'/user/cabinet',
-        component: () => import('@/src/pages/User/Cabinet.vue'),
-        name:'cabinet'
-    },
-
-    {
-        path:'/user/login',
-        component: () => import('@/src/pages/User/Login.vue'),
-        name:'login'
-    },
-
-    {
-        path:'/user/register',
-        component: () => import('@/src/pages/User/Register.vue'),
-        name:'register'
-    },
-
+    ...login_routes,
 
     {
 
