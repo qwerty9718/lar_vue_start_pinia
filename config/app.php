@@ -170,6 +170,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \App\Service\Localization\LocalizationServiceProvider::class
+//        \App\Service\Localization\Localization::locale()
     ])->toArray(),
 
     /*

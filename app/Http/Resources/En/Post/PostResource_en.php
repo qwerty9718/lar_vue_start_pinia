@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Resources\Post;
+namespace App\Http\Resources\En\Post;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class PostResource_Ru extends JsonResource
+class PostResource_en extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,8 +16,8 @@ class PostResource_Ru extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title_ru,
-            'body' => $this->body_ru
+            'title' => $this->title_en,
+            'body' => $this->body_en
         ];
     }
 }

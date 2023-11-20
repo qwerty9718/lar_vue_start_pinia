@@ -4,9 +4,10 @@ import router from "@/src/router/router.js";
 
 export const login_register_Module = {
     state: () => ({
-        login: {password: '', email: ''},
-        register: {name: '', email: '', password: '', password_confirmation: ''},
-        token: null
+        login: {password: '', email: '', remember: false},
+        register: {name: '', email: '', password: '', password_confirmation: '',remember: false},
+        token: null,
+        errors: {}
     }),
     getters: {
         getLoginData(state) {
@@ -19,6 +20,9 @@ export const login_register_Module = {
 
         getToken(state){
             return state.token;
+        },
+        getErrors(state){
+            return state.errors;
         }
     },
     mutations: {
@@ -32,28 +36,31 @@ export const login_register_Module = {
     },
 
     actions: {
-        async login({state, commit,dispatch}) {
-            const data = {email: state.login.email, password: state.login.password};
-            const get_csrf_cookie = await axios.get('/sanctum/csrf-cookie');
-            const response = await axios.post('/login', data);
-            localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
+        async login({state, commit, dispatch},{language}) {
+            const data = {email: state.login.email, password: state.login.password, remember: state.login.remember};
+            const response = await axios.post(`/api/${language}/auth/login`, data);
+            localStorage.setItem('x_xsrf_token', response.data.token);
             dispatch('getAccessToken');
             router.push({name: 'cabinet'});
+            commit('setLoginData', {password: '', email: '', remember: false});
+            state.errors = {};
         },
 
-        async register({state, commit,dispatch}) {
+        async register({state, commit,dispatch},{language}) {
             const data = {
                 name:state.register.name,
                 email: state.register.email,
                 password: state.register.password,
-                password_confirmation: state.register.password_confirmation
+                password_confirmation: state.register.password_confirmation,
+                remember: state.register.remember
             };
 
-            const get_csrf_cookie = await axios.get('/sanctum/csrf-cookie');
-            const response = await axios.post('/register', data);
-            localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
-            dispatch('getAccessToken');
-            router.push({name: 'cabinet'});
+                const response = await axios.post(`/api/${language}/auth/register`, data);
+                localStorage.setItem('x_xsrf_token', response.data.token);
+                dispatch('getAccessToken');
+                router.push({name: 'cabinet'});
+                commit('setRegisterData', {name: '', email: '', password: '', password_confirmation: ''});
+                state.errors = {};
         },
 
         getAccessToken({state, commit}){
@@ -61,10 +68,14 @@ export const login_register_Module = {
         },
         removeAccessToken({state, commit}){
             state.token = null;
+            localStorage.removeItem('x_xsrf_token');
+        },
+
+        setErrors({state, commit, dispatch},{array}){
+            state.errors = array;
         }
 
     },
-
 
     namespaced: true
 }

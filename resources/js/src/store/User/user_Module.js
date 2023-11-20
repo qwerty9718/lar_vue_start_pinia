@@ -16,7 +16,11 @@ export const user_Module = {
     },
     actions: {
         async getUserData({state, commit}){
-            const response = await axios.get('/api/user-data');
+            const response = await axios.get('/api/user-data',{
+                headers:{
+                    'authorization': 'Bearer '+ localStorage.getItem('x_xsrf_token')
+                }
+            });
             commit('setUser',response.data);
         },
 

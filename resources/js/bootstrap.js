@@ -7,7 +7,10 @@ window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 
-window.axios.interceptors.response.use({}, error => {
+
+
+window.axios.interceptors.response.use( {}, error => {
+
     if (error.response.status === 401 || error.response.status === 419){
         router.push({name: 'login'});
         const token = localStorage.getItem('x_xsrf_token');
@@ -16,6 +19,19 @@ window.axios.interceptors.response.use({}, error => {
             store.dispatch('login_register_module/removeAccessToken');
         }
     }
+
+    if(error.response.status === 422){
+        store.dispatch('login_register_module/setErrors',{array:error.response.data.errors});
+    }
+
+    if (error.response.status === 403){
+        store.dispatch('login_register_module/setErrors',{array: {message: error.response.data.message}});
+    }
+
+
+
+    console.log(error)
+
 });
 
 

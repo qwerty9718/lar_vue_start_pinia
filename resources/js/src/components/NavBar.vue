@@ -49,15 +49,12 @@
                     <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
                     <button class="btn btn-outline-success" type="submit">Поиск</button>
                 </form>
+
                 <ul class="navbar-nav  mb-2">
-
-
                     <li class="nav-item mt-2 ml-2">
                         <button class="btn btn-success btn-sm" @click="setLanguage({lang: lang,$i18n: this.$i18n})">{{ lang }}</button>
                     </li>
-
                 </ul>
-
             </div>
         </div>
     </nav>
@@ -79,11 +76,16 @@ export default defineComponent({
             setLanguage: 'lang_module/setLanguage'
         }),
 
-        logout() {
-            axios.post('/logout');
-            localStorage.removeItem('x_xsrf_token');
-            this.afterLogout();
+        async logout() {
+           const logout = await axios.post('/api/ru/auth/logout',{},{
+                headers:{
+                    'authorization': 'Bearer '+ localStorage.getItem('x_xsrf_token')
+                }
+            });
+            await this.afterLogout();
             this.$router.push({name: 'main'});
+            localStorage.removeItem('x_xsrf_token');
+
         }
 
     },

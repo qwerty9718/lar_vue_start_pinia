@@ -18,8 +18,11 @@ class SetLocale
     public function handle(Request $request, Closure $next): Response
     {
 
-        $langPrefix = ltrim($request->route()->getPrefix(),'api/') ;
-
+        function getPrefix($str) {
+            $prefix = explode("/", $str);
+            return $prefix[1];
+        }
+        $langPrefix = getPrefix($request->route()->getPrefix());
         App::setLocale($langPrefix);
         return $next($request);
     }

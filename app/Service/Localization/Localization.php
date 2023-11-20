@@ -6,14 +6,17 @@ use Exception;
 
 class Localization
 {
-    public function locale(){
+
+
+    public static function locale(){
         $locale = request()->segment(2,'');
+
 
         if ($locale && in_array($locale, config('app.locales'))){
             return $locale;
         }
 
-        return '';
+        return Exception::class;
 
     }
 }

@@ -1,6 +1,6 @@
 import {createI18n} from "vue-i18n";
-import en from "@/src/i18n/langs/en.js";
-import ru from "@/src/i18n/langs/ru.js";
+import en from "@/src/i18n/langs/en/en.js";
+import ru from "@/src/i18n/langs/ru/ru.js";
 
 const messages = {
     en: en,
