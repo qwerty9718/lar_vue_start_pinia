@@ -2,6 +2,7 @@
     <NavBar/>
     <RouterView/>
     <Watch/>
+    <h1>asd</h1>
 </template>
 
 <script>
