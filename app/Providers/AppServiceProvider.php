@@ -21,9 +21,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        //
         sanctum::authenticateaccesstokensusing(function (personalaccesstoken $token, $isvalid) {
-            if($isvalid) return true;
+            if($isvalid) { return true;}
             if($token["abilities"][0] == "remember"){
                 return $token->can('remember') && $token->created_at->gt(now()->subyears(5));
             }

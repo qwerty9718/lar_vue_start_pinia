@@ -17,13 +17,11 @@ class AuthController extends Controller
         $fields = $request->validated();
 
 
-
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
             'password' => bcrypt( $fields['password'] ),
         ]);
-
 
         $token = null;
         if (!$fields['remember']){
