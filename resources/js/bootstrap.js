@@ -1,39 +1,49 @@
 
 import axios from 'axios';
 import router from "@/src/router/router.js";
-import store from "@/src/store/index.js";
+import {login_register_Store} from "@/src/stores/User/login_register_Store.js";
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 
+window.axios.interceptors.request.use( config => {
+    if (localStorage.getItem('x_xsrf_token')){
+        config.headers.Authorization = 'Bearer '+ localStorage.getItem('x_xsrf_token')
+    }
+    return config;
+}, error => {});
 
 
-window.axios.interceptors.response.use( {}, error => {
+window.axios.interceptors.response.use( config => {
+    if (localStorage.getItem('x_xsrf_token')){
+        config.headers.Authorization = 'Bearer '+ localStorage.getItem('x_xsrf_token')
+    }
+
+    return config;
+}, error => {
 
     if (error.response.status === 401 || error.response.status === 419){
         router.push({name: 'login'});
         const token = localStorage.getItem('x_xsrf_token');
         if (token){
             localStorage.removeItem('x_xsrf_token');
-            store.dispatch('login_register_module/removeAccessToken');
+            login_register_Store().removeAccessToken();
         }
     }
 
     if(error.response.status === 422){
-        store.dispatch('login_register_module/setErrors',{array:error.response.data.errors});
+        login_register_Store().setErrors(error.response.data.errors)
     }
 
     if (error.response.status === 403){
-        store.dispatch('login_register_module/setErrors',{array: {message: error.response.data.message}});
+        login_register_Store().setErrors({})
+        login_register_Store().errors.message = error.response.data.message;
     }
 
-
-
-    console.log(error)
+    // console.log(error)
 
 });
-
 
 // import Echo from 'laravel-echo';
 

@@ -1,38 +1,32 @@
-<script>
-import {defineComponent} from 'vue'
-import {mapActions, mapGetters} from "vuex";
+<template>
 
-export default defineComponent({
-    name: "Watch",
+</template>
 
-    computed: {
-        ...mapGetters({
-            lang: 'lang_module/getLang'
-        }),
-    },
+<script setup>
+import {lang_Store} from "@/src/stores/Language/lang_Store.js";
+import {content_Store} from "@/src/stores/Content/content_Store.js";
+import {watch} from "vue";
+import router from "@/src/router/router.js";
 
-    methods: {
-        ...mapActions({
-            getPostsDB: 'content_module/getPostsDB',
-            getText: 'content_module/getTextDB'
-        }),
-    },
+const language = lang_Store();
+const content = content_Store();
 
-    watch: {
-        lang: {
-            handler(newVal) {
-                if(this.$route.name){
-                    if (this.$route.name !== 'login' && this.$route.name !== 'register'){
-                        this.getPostsDB({lang: this.$i18n.locale});
-                        this.getText({lang: this.$i18n.locale});
-                    }
-                }
-            },
-            deep: true,
-        },
-    },
-})
+
+watch(() => language.lang, (newVal) => {
+    if(router.currentRoute._value.name){
+
+        if (router.currentRoute._value.name === 'content'){
+            content.getTextDB(newVal);
+        }
+
+        if (router.currentRoute._value.name === 'cabinet'){
+            content.getPostsDB(newVal);
+        }
+    }
+});
+
 </script>
+
 
 
 <style scoped>

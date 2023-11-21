@@ -1,5 +1,4 @@
 <template>
-<!--{{this.$i18n.locale}}-->
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Навбар</a>
@@ -17,28 +16,28 @@
                         </router-link>
                     </li>
 
-                    <li class="nav-item" v-show="token">
+                    <li class="nav-item" v-show="login_register.token">
                         <router-link class="nav-link" aria-current="page" :to="{name: 'content'}">
                             {{ $t('link_content') }}
                         </router-link>
                     </li>
 
-                    <li class="nav-item" v-show="!token">
+                    <li class="nav-item" v-show="!login_register.token">
                         <router-link class="nav-link" aria-current="page" :to="{name: 'login'}">{{ $t('link_login') }}
                         </router-link>
                     </li>
 
-                    <li class="nav-item" v-show="!token">
+                    <li class="nav-item" v-show="!login_register.token">
                         <router-link class="nav-link" aria-current="page" :to="{name: 'register'}">
                             {{ $t('link_register') }}
                         </router-link>
                     </li>
 
-                    <li class="nav-item" v-show="token">
+                    <li class="nav-item" v-show="login_register.token">
                         <button class="nav-link" aria-current="page" @click="logout">{{ $t('link_logout') }}</button>
                     </li>
 
-                    <li class="nav-item" v-show="token">
+                    <li class="nav-item" v-show="login_register.token">
                         <router-link class="nav-link" aria-current="page" :to="{name: 'cabinet'}">
                             {{ $t('link_cabinet') }}
                         </router-link>
@@ -52,7 +51,7 @@
 
                 <ul class="navbar-nav  mb-2">
                     <li class="nav-item mt-2 ml-2">
-                        <button class="btn btn-success btn-sm" @click="setLanguage({lang: lang,$i18n: this.$i18n})">{{ lang }}</button>
+                        <button class="btn btn-success btn-sm" @click="language.setLanguage(language.lang,i18n)">{{ language.lang }}</button>
                     </li>
                 </ul>
             </div>
@@ -60,49 +59,37 @@
     </nav>
 </template>
 
+<script setup>
+import {user_Store} from "@/src/stores/User/user_Store.js";
+import {login_register_Store} from "@/src/stores/User/login_register_Store.js";
+import {lang_Store} from "@/src/stores/Language/lang_Store.js";
+import i18n from "@/src/i18n/i18n.js";
+import {computed, onMounted, ref} from "vue";
+import router from "@/src/router/router.js";
 
-<script>
-import {defineComponent} from 'vue'
-import {mapActions,mapGetters} from "vuex";
+const user = user_Store();
+const login_register = login_register_Store();
+const language = lang_Store();
 
-export default defineComponent({
-    name: "NavBar",
 
-    methods: {
-        ...mapActions({
-            afterLogout: "user_module/afterLogout",
-            getAccessToken: "login_register_module/getAccessToken",
-            getLang: 'lang_module/getLangFromLocalStorage',
-            setLanguage: 'lang_module/setLanguage'
-        }),
-
-        async logout() {
-           const logout = await axios.post('/api/ru/auth/logout',{},{
-                headers:{
-                    'authorization': 'Bearer '+ localStorage.getItem('x_xsrf_token')
-                }
-            });
-            await this.afterLogout();
-            this.$router.push({name: 'main'});
-            localStorage.removeItem('x_xsrf_token');
-
+async function logout() {
+    const logout = await axios.post('/api/ru/auth/logout', {}, {
+        headers: {
+            'authorization': 'Bearer ' + localStorage.getItem('x_xsrf_token')
         }
+    });
+    await user.afterLogout();
+    router.push({name:'main'});
+    localStorage.removeItem('x_xsrf_token');
 
-    },
+}
 
-    computed:{
-      ...mapGetters({
-          token: "login_register_module/getToken",
-          lang: 'lang_module/getLang',
-      })
-    },
-
-    mounted() {
-        this.getLang();
-        this.getAccessToken();
-    }
+onMounted(() => {
+    language.getLangFromLocalStorage();
+    login_register.getAccessToken();
 })
 </script>
+
 
 
 <style scoped>

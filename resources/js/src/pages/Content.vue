@@ -1,46 +1,31 @@
 <template>
     <div>
         <h1>{{$t('content')}}</h1>
-        <h2>{{$t('num')}} : {{num}}</h2>
+        <h2>{{$t('num')}} : {{first.number}}</h2>
         <div>
-            <button class="btn btn-success" @click="initNum(2)">init</button>
+            <button class="btn btn-success" @click="first.initNumber(2)">init</button>
         </div>
 
 
-        <div class="container" v-if="text">
-            <h1>{{text}}</h1>
+        <div class="container" v-if="content.text">
+            <h1>{{content.text}}</h1>
         </div>
 
     </div>
 </template>
 
 
-<script>
-import {defineComponent} from 'vue'
-import {mapActions,mapGetters} from "vuex";
+<script setup>
+import {fist_Store} from "@/src/stores/fist_Store.js";
+import {content_Store} from "@/src/stores/Content/content_Store.js";
+import {onMounted} from "vue";
+import i18n from "@/src/i18n/i18n.js";
 
-export default defineComponent({
-    name: "Content",
+const first = fist_Store();
+const content = content_Store();
 
-    computed:{
-        ...mapGetters({
-            num: "firs/getNumber",
-            text: 'content_module/getText'
-        })
-    },
-
-    methods:{
-        ...mapActions({
-            initNum: "firs/initNumber",
-            getText: 'content_module/getTextDB'
-        })
-    },
-
-
-    mounted() {
-        this.getText({lang: this.$i18n.locale});
-    }
-
+onMounted(() => {
+    content.getTextDB(i18n.global.locale);
 })
 </script>
 

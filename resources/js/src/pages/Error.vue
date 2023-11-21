@@ -1,16 +1,17 @@
-<script>
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-    name: "Error"
-})
-</script>
-
 <template>
 <div>
     <h1>Error</h1>
+    <button @click.prevent="getHome()">get home</button>
 </div>
 </template>
+
+
+<script setup>
+import router from "@/src/router/router.js";
+const getHome = () => {
+    router.push({name: 'main'})
+}
+</script>
 
 <style scoped>
 

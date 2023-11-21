@@ -1,20 +1,13 @@
 <template>
     <div>
         <h1>{{$t('main')}}</h1>
-        <h1>{{this.$i18n.locale}}</h1>
+        <h1>{{i18n.global.locale}}</h1>
         <h1>{{$t('word')}}</h1>
     </div>
 </template>
 
-<script>
-import {defineComponent} from 'vue'
-
-export default defineComponent({
-    name: "Main",
-    methods:{
-
-    }
-})
+<script setup>
+import i18n from "@/src/i18n/i18n.js";
 </script>
 
 
