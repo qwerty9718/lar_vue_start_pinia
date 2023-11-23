@@ -9,14 +9,13 @@ export const content_Store = defineStore('content_store', {
 
     actions: {
         async getTextDB(lang){
-            const response = await axios.get('/api/'+ lang +'/getSecondContent');
+            const response = await axios.get('/api/'+ lang +'/content/message');
             this.text = response.data;
         },
 
         async getPostsDB(lang){
-            const response = await axios.get('/api/'+ lang +'/getContent');
+            const response = await axios.get('/api/'+ lang +'/content/posts');
             this.posts = response.data;
-            console.log(this.posts)
         }
     },
 })

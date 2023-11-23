@@ -26,6 +26,7 @@ const content = content_Store();
 
 
 onMounted(() => {
+
     userStore.getUserData();
     content.getPostsDB(i18n.global.locale)
 });

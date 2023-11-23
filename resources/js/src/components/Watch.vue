@@ -15,13 +15,11 @@ const content = content_Store();
 watch(() => language.lang, (newVal) => {
     if(router.currentRoute._value.name){
 
-        if (router.currentRoute._value.name === 'content'){
+        if (router.currentRoute._value.name === 'content' || router.currentRoute._value.name === 'cabinet'){
             content.getTextDB(newVal);
-        }
-
-        if (router.currentRoute._value.name === 'cabinet'){
             content.getPostsDB(newVal);
         }
+
     }
 });
 

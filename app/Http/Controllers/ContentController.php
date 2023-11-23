@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\Post\PostStoreRequest;
+
 use App\Http\Resources\En\Post\PostResource_en;
 use App\Http\Resources\Ru\Post\PostResource_ru;
 use App\Models\Post;
@@ -16,20 +18,19 @@ class ContentController extends Controller
     }
 
     public function getContent(){
-        $data = null;
         $posts = Post::all();
-
-        if (App::getLocale() == 'en'){
-            $data = PostResource_en::collection($posts)->resolve();
-        }
-        if (App::getLocale() == 'ru'){
-            $data = PostResource_ru::collection($posts)->resolve();
-        }
-
-        return $data;
+        return Post::getLocalePostResource('PostResource',App::getLocale(),'collection', $posts);
     }
 
     public function getSecondContent(){
         return  __('messages.message');
     }
+
+
+    public function createPost(PostStoreRequest $request){
+        $data = $request->validated();
+        $post = Post::create($data);
+        return Post::getLocalePostResource('PostResource',App::getLocale(),'make', $post);
+    }
+
 }
