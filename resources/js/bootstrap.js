@@ -2,6 +2,7 @@
 import axios from 'axios';
 import router from "@/src/router/router.js";
 import {login_register_Store} from "@/src/stores/User/login_register_Store.js";
+import {user_Store} from "@/src/stores/User/user_Store.js";
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -24,12 +25,7 @@ window.axios.interceptors.response.use( config => {
 }, error => {
 
     if (error.response.status === 401 || error.response.status === 419){
-        router.push({name: 'login'});
-        const token = localStorage.getItem('x_xsrf_token');
-        if (token){
-            localStorage.removeItem('x_xsrf_token');
-            login_register_Store().removeAccessToken();
-        }
+        user_Store().afterLogout();
     }
 
     if(error.response.status === 422){

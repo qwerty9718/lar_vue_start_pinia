@@ -43,6 +43,20 @@
                         </router-link>
                     </li>
 
+                    <li class="nav-item" v-show="login_register.token">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'create_post'}">
+                            create post
+                        </router-link>
+                    </li>
+
+
+                    <li class="nav-item" v-show="login_register.token">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'comments'}">
+                            comments
+                        </router-link>
+                    </li>
+
+
                 </ul>
                 <form class="d-flex" role="search">
                     <input class="form-control me-2" type="search" placeholder="Поиск" aria-label="Поиск">
@@ -73,15 +87,8 @@ const language = lang_Store();
 
 
 async function logout() {
-    const logout = await axios.post('/api/ru/auth/logout', {}, {
-        headers: {
-            'authorization': 'Bearer ' + localStorage.getItem('x_xsrf_token')
-        }
-    });
+    const logout = await axios.post('/api/ru/auth/logout', {});
     await user.afterLogout();
-    router.push({name:'main'});
-    localStorage.removeItem('x_xsrf_token');
-
 }
 
 onMounted(() => {

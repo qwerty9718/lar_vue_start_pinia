@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContentController;
 
+use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
@@ -25,12 +26,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLocale'], function () {
 
 
+    Route::group(['prefix' => 'comments', 'middleware' => 'auth:sanctum'], function (){
+        Route::get('/', [TestController::class,'index']);
+        Route::post('/',[TestController::class,'createComment']);
+    });
+
+
     Route::group(['prefix' => 'content', 'middleware' => 'auth:sanctum'], function (){
         Route::get('/posts', [ContentController::class, 'getContent']);
         Route::post('/posts',[ContentController::class,'createPost']);
-
         Route::get('/message', [ContentController::class, 'getSecondContent']);
-
     });
 
 

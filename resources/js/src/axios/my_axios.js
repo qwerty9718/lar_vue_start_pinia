@@ -1,6 +1,7 @@
 import axios from "axios";
 import router from "@/src/router/router.js";
 import {login_register_Store} from "@/src/stores/User/login_register_Store.js";
+import {error_Store} from "@/src/stores/error_Store.js";
 
 const my_axios = axios.create();
 
@@ -31,7 +32,7 @@ my_axios.interceptors.response.use( config => {
     }
 
     if(error.response.status === 422){
-        login_register_Store().setErrors(error.response.data.errors)
+        error_Store().setErrors(router.currentRoute._value.name,error.response.data.errors)
     }
 
     if (error.response.status === 403){

@@ -1,5 +1,6 @@
 import {createRouter, createWebHistory} from "vue-router";
 import login_routes from "@/src/router/login_register_routes/login_routes.js";
+import security_route_list from "@/src/router/security_routes/security_route_list.js";
 
 const routes = [
     {
@@ -12,6 +13,18 @@ const routes = [
         component: () => import('@/src/pages/Content.vue'),
         name:'content'
     },
+    {
+        path:'/content/create',
+        component: () => import('@/src/pages/User/CreatePost.vue'),
+        name:'create_post'
+    },
+
+    {
+        path:'/comment',
+        component: () => import('@/src/pages/Comments.vue'),
+        name:'comments'
+    },
+
     ...login_routes,
 
     {
@@ -37,11 +50,7 @@ router.beforeEach((to, from, next) => {
 
     // Если ТОКЕНА нет
     if (!accessToken){
-        if(to.name === 'cabinet') {
-            return next({name:'login'})
-        }
-
-        if(to.name === 'content') {
+        if(security_route_list.includes(to.name)) {
             return next({name:'login'})
         }
     }

@@ -22,10 +22,18 @@ class PostStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title_ru' => 'required|string',
-            'title_en' => 'required|string',
-            'body_ru' => 'required|string',
-            'body_en' => 'required|string'
+            'title_ru' => 'required|string|min:5|max:30',
+            'title_en' => 'required|string|min:5|max:30',
+            'body_ru' => 'required|string|min:5',
+            'body_en' => 'required|string|min:5'
         ];
     }
+
+
+//    public function messages()
+//    {
+//        return [
+//            'title_ru.required' => __('validation.required')
+//        ];
+//    }
 }
