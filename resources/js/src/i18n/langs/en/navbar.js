@@ -6,4 +6,5 @@ export default {
     link_register: 'Register',
     link_logout: 'Logout',
     link_cabinet: 'Cabinet',
+    link_create_post: 'Create Post',
 }

@@ -25,19 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLocale'], function () {
 
-
-    Route::group(['prefix' => 'comments', 'middleware' => 'auth:sanctum'], function (){
-        Route::get('/', [TestController::class,'index']);
-        Route::post('/',[TestController::class,'createComment']);
-    });
-
-
     Route::group(['prefix' => 'content', 'middleware' => 'auth:sanctum'], function (){
         Route::get('/posts', [ContentController::class, 'getContent']);
         Route::post('/posts',[ContentController::class,'createPost']);
         Route::get('/message', [ContentController::class, 'getSecondContent']);
     });
-
 
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/logout', [AuthController::class,'logout'])->middleware('auth:sanctum');
@@ -50,7 +42,6 @@ Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLoc
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/user-data', [ContentController::class, 'index']);
-
 });
 
 

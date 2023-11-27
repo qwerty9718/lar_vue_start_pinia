@@ -12,7 +12,8 @@
 
 
                     <li class="nav-item">
-                        <router-link class="nav-link" aria-current="page" :to="{name: 'main'}">{{ $t('link_main') }}
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'main'}">
+                            {{ $t('link_main') }}
                         </router-link>
                     </li>
 
@@ -23,7 +24,8 @@
                     </li>
 
                     <li class="nav-item" v-show="!login_register.token">
-                        <router-link class="nav-link" aria-current="page" :to="{name: 'login'}">{{ $t('link_login') }}
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'login'}">
+                            {{ $t('link_login') }}
                         </router-link>
                     </li>
 
@@ -45,16 +47,10 @@
 
                     <li class="nav-item" v-show="login_register.token">
                         <router-link class="nav-link" aria-current="page" :to="{name: 'create_post'}">
-                            create post
+                            {{$t ('link_create_post')}}
                         </router-link>
                     </li>
 
-
-                    <li class="nav-item" v-show="login_register.token">
-                        <router-link class="nav-link" aria-current="page" :to="{name: 'comments'}">
-                            comments
-                        </router-link>
-                    </li>
 
 
                 </ul>

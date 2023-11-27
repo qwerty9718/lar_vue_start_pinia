@@ -6,4 +6,5 @@ export default {
     link_register: 'Регистрация',
     link_logout: 'Выход',
     link_cabinet: 'Кабинет',
+    link_create_post: 'Создать Пост',
 }
