@@ -17,7 +17,8 @@ class PostResource_ru extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title_ru,
-            'body' => $this->body_ru
+            'body' => $this->body_ru,
+            'time_create' => $this->created_at->diffForHumans()
         ];
     }
 }

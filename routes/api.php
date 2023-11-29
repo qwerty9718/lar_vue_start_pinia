@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Comment\CommentController;
 use App\Http\Controllers\ContentController;
 
-use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
@@ -29,6 +29,14 @@ Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLoc
         Route::get('/posts', [ContentController::class, 'getContent']);
         Route::post('/posts',[ContentController::class,'createPost']);
         Route::get('/message', [ContentController::class, 'getSecondContent']);
+    });
+
+    Route::group(['prefix' => 'comment', 'middleware' => 'auth:sanctum'], function (){
+        Route::get('/', [CommentController::class, 'index']);
+        Route::get('/{id}/replies', [CommentController::class, 'getReplies']);
+        Route::get('/{id}/post', [CommentController::class, 'getCommentsByPost']);
+//        Route::post('/posts',[ContentController::class,'createPost']);
+//        Route::get('/message', [ContentController::class, 'getSecondContent']);
     });
 
     Route::group(['prefix' => 'auth'], function () {

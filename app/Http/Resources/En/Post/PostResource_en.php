@@ -17,7 +17,8 @@ class PostResource_en extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title_en,
-            'body' => $this->body_en
+            'body' => $this->body_en,
+            'time_create' => $this->created_at->diffForHumans()
         ];
     }
 }
