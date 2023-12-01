@@ -9,5 +9,9 @@ export const error_Store = defineStore('error_store', {
         setErrors(current_route,array){
             this.error_list[current_route] = array;
         },
+
+        emptyErrorList(){
+            this.error_list = {};
+        }
     },
 })

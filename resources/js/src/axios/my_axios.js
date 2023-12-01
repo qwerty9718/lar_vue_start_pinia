@@ -40,6 +40,10 @@ my_axios.interceptors.response.use( config => {
         login_register_Store().errors.message = error.response.data.message;
     }
 
+    // if (error.response.status === 404){
+    //     router.push({name: 'error'})
+    // }
+
     // console.log(error)
 
 });

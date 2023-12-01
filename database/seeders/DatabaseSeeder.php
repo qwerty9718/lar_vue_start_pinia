@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
 
-//        Comment::factory(10)->create();
+        Comment::factory(15)->create();
 //        $post1 = Post::create([
 //            'title_ru' => 'Что такое Lorem Ipsum?',
 //            'title_en' => 'What is Lorem Ipsum',

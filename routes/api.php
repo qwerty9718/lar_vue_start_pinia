@@ -35,8 +35,10 @@ Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLoc
         Route::get('/', [CommentController::class, 'index']);
         Route::get('/{id}/replies', [CommentController::class, 'getReplies']);
         Route::get('/{id}/post', [CommentController::class, 'getCommentsByPost']);
-//        Route::post('/posts',[ContentController::class,'createPost']);
-//        Route::get('/message', [ContentController::class, 'getSecondContent']);
+
+        Route::post('/',[CommentController::class,'createComment']);
+        Route::post('/reply',[CommentController::class,'createReply']);
+        Route::delete('/{id}',[CommentController::class,'deleteComment']);
     });
 
     Route::group(['prefix' => 'auth'], function () {

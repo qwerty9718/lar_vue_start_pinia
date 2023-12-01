@@ -18,10 +18,6 @@ class Post extends Model
         return call_user_func(array($class_name, $action), $posts)->resolve();
     }
 
-//    public function comments()
-//    {
-//        return $this->hasMany(Comment::class)->orderBy('id', 'desc')->paginate(5);
-//    }
     public function comments()
     {
         return $this->hasMany(Comment::class)

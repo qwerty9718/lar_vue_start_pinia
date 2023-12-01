@@ -42,7 +42,6 @@ import {computed, onMounted, reactive} from "vue";
 
 
 const this_route = router.currentRoute.value.name;
-// const errors = error_Store().error_list;
 const content = content_Store();
 const errors = computed(() => reactive(error_Store().error_list));
 

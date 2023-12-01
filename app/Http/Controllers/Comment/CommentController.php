@@ -11,6 +11,7 @@ use App\Http\Resources\Comment\ReplyResource;
 use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class CommentController extends Controller
 {
@@ -21,7 +22,18 @@ class CommentController extends Controller
     }
     public function getCommentsByPost($id){
         $post = Post::findOrFail($id);
-        return CommentResource::collection($post->comments());
+        $comments = $post->comments();
+        return [
+            'post' => Post::getLocalePostResource('PostResource',App::getLocale(),'make',$post),
+            'comments' => CommentResource::collection($comments),
+            'pagination' => [
+                'page' => $comments->currentPage(),
+                'per_page' => $comments->perPage(),
+                'last_page' => $comments->lastPage(),
+                'total' => $comments->total(),
+                'current_page' => $comments->currentPage()
+            ],
+        ];
     }
     public function getReplies($id){
         $replies = ReplyResource::collection(Comment::findOrFail($id)
@@ -39,5 +51,9 @@ class CommentController extends Controller
     public function createReply(ReplyRequest $request){
         $data = $request->validated();
         return ReplyResource::make(Comment::create($data))->resolve();
+    }
+
+    public function deleteComment($id){
+        $comment = Comment::findOrFail($id)->delete();
     }
 }

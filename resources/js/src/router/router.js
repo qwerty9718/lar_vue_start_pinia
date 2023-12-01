@@ -22,6 +22,14 @@ const routes = [
     ...login_routes,
 
     {
+        path:'/comments/:id',
+        component: () => import('@/src/pages/Comments/Comments.vue'),
+        name:'comments'
+    },
+
+
+
+    {
 
         path: '/:pathMatch(.*)*',
         component: () => import('@/src/pages/Error.vue'),
@@ -40,7 +48,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
 
-    const accessToken = localStorage.getItem('x_xsrf_token')
+    const accessToken = localStorage.getItem('x_xsrf_token');
+
 
     // Если ТОКЕНА нет
     if (!accessToken){

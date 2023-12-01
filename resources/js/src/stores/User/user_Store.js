@@ -5,7 +5,7 @@ import router from "@/src/router/router.js";
 
 export const user_Store = defineStore('user_store', {
     state: () => {return {
-        user: {}
+        user: null
     }},
 
     actions: {
