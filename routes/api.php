@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContentController;
 
+use App\Http\Controllers\Message\MessageController;
 use App\Http\Controllers\TestController;
 use Illuminate\Http\Request;
 
@@ -42,6 +43,12 @@ Route::group(['prefix' => LocalizationService::locale(), 'middleware' => 'setLoc
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/user-data', [ContentController::class, 'index']);
+});
+
+
+Route::group(['prefix' => 'messages'], function (){
+    Route::get('/', [MessageController::class,'index']);
+    Route::post('/', [MessageController::class,'create']);
 });
 
 

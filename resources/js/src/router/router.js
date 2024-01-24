@@ -19,11 +19,11 @@ const routes = [
         name:'create_post'
     },
 
-    // {
-    //     path:'/comment',
-    //     component: () => import('@/src/pages/Comments.vue'),
-    //     name:'comments'
-    // },
+    {
+        path:'/messages',
+        component: () => import('@/src/pages/Messages/MessagePage.vue'),
+        name:'message-page'
+    },
 
     ...login_routes,
 

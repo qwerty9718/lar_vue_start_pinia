@@ -51,7 +51,11 @@
                         </router-link>
                     </li>
 
-
+                    <li class="nav-item">
+                        <router-link class="nav-link" aria-current="page" :to="{name: 'message-page'}">
+                            messages
+                        </router-link>
+                    </li>
 
                 </ul>
                 <form class="d-flex" role="search">
