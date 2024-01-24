@@ -20,6 +20,8 @@ services:
             - ./:/var/www/
         depends_on:
             - db
+        ports:
+            - "6001:6001"
         container_name: project_app_v1
 
     db:

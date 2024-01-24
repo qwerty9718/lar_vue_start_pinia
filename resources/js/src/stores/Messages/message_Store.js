@@ -18,7 +18,6 @@ export const message_Store = defineStore('message_store', {
 
         async createMessage(){
             const request = await axios.post('/api/messages',this.messageData);
-            // this.listMessages.push(request.data);
             this.addMessageToList(request.data);
             this.messageData = {body:''};
         },
