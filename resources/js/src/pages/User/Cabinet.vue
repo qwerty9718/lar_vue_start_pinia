@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Cabinet</h1>
+        <h1>Cabinet!!!!!!!!!!</h1>
         <div v-if="userStore.user">
             <h3>Name : {{userStore.user.name}}</h3>
             <h4>Email : {{userStore.user.email}}</h4>
